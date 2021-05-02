@@ -1,6 +1,7 @@
 import 'focus-visible'
 import 'alpinejs'
 import Processor from './components/processor'
+import TextareaAutoSize from './components/textarea'
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -9,3 +10,4 @@ if ('serviceWorker' in navigator) {
 }
 
 Processor();
+TextareaAutoSize();

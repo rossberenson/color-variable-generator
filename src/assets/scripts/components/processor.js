@@ -1,6 +1,7 @@
 import ntc, { name } from 'ntc';
 // import color from 'color';
 import rainbowSort from 'rainbow-sort';
+import autosize from 'autosize';
 
 const symbols = {
     css: '--',
@@ -164,9 +165,28 @@ const Processor = function () {
                 });
             }
 
-            console.log('hexArray', hexArray);
+            // console.log('hexArray', hexArray);
 
-            hexOutput.value = hexArray.toString();
+            // Output array and formate each line items to be name: #hex;
+            let output = '';
+            for (let i = 0; i < hexArray.length; i++) {
+                let colorItem = hexArray[i];
+
+                // If the first value of colorItem is an array, it has an RGB varient.
+                if (Array.isArray(colorItem[0])) {
+                    for (let j = 0; j < colorItem.length; j++) {
+                        const element = colorItem[j];
+                        output += element.join(': ') + '; \r\n';
+
+                    }
+                } else {
+                    output += (i > 0 ? '\r\n' : '') + colorItem.join(': ') + ';';
+                }
+            }
+            // console.log('outputArray', outputArray);
+            hexOutput.value = output;
+
+            autosize.update(hexOutput);
         }
     });
 
