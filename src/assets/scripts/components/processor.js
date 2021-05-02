@@ -2,6 +2,12 @@ import ntc, { name } from 'ntc';
 // import color from 'color';
 import rainbowSort from 'rainbow-sort';
 
+const symbols = {
+    css: '--',
+    sass: '$',
+    less: '@',
+}
+
 /**
  * Enable or disable RGB Varient if Convert to RGB is enabled.
  *
@@ -68,7 +74,7 @@ function hexToRGB(hex) {
 const Processor = function () {
     const hexInput = document.querySelector('.hex-input');
     const hexOutput = document.querySelector('.hex-output');
-    const generateLanguage = document.querySelector('.generate-language');
+    const selectedLanguage = document.querySelector('.generate-language');
     const varPrefix = document.querySelector('.prefix-input');
     const convertToRGB = document.querySelector('.convert-rgb');
     const addRGBVarient = document.querySelector('.rgb-varient');
@@ -100,18 +106,24 @@ const Processor = function () {
 
                 const colorMatchArr = ntc.name(hexColor); // array('#closest_hex', 'name', bool );
 
-                const arr = [colorMatchArr[1], hexColor];
+                // Format Color
+                const colorMatchName = convertToSlug(colorMatchArr[1]);
+
+                const arr = [colorMatchName, hexColor];
 
                 return arr;
             });
 
-            // Format color name
-            hexArray.forEach(color => {
-                color[0] = convertToSlug(color[0]);
+            // Find duplicate names and add number to the name. ie red-1, red-2
+            const colorMap = {};
+            const count = hexArray.map(val => {
+                return colorMap[val[0]] = (typeof colorMap[val[0]] === "undefined") ? 1 : colorMap[val[0]] + 1;
             });
 
-            // Find duplicate names and add number to the name. ie red-1, red-2
-
+            hexArray.forEach((color, index) => {
+                const name = colorMap[color[0]] === 1 ? color[0] : color[0] + '-' + count[index];
+                color[0] = name;
+            });
 
             /**
              * Add Prefix
@@ -126,26 +138,9 @@ const Processor = function () {
             /**
              * Convert color name to variable name
              */
-            const language = generateLanguage.value;
-
-            // Update name per language with variable symbol
-            let symbol = '';
-            switch (language) {
-                case 'css':
-                    symbol = '--';
-                    break;
-                case 'sass':
-                    symbol = '$';
-                    break;
-                case 'less':
-                    symbol = '@';
-                    break;
-                default:
-                    symbol = '';
-            }
-
+            const language = selectedLanguage.value;
             hexArray.forEach(color => {
-                color[0] = symbol + color[0];
+                color[0] = symbols[language] + color[0];
             });
 
             // Convert to RGB
