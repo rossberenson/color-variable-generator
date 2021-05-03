@@ -33,7 +33,7 @@ jobs:
       uses: crazy-max/ghaction-github-pages@v2.3.0
       with:
         # Git domain (default github.com)
-        domain: rossberenson.github.io/color-variable-generator
+        # domain: rossberenson.github.io/color-variable-generator
         # Build directory to deploy
         build_dir: dist
       env:
