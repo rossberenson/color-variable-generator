@@ -36,3 +36,5 @@ jobs:
         domain: https://rossberenson.github.io/color-variable-generator
         # Build directory to deploy
         build_dir: dist
+      env:
+        GITHUB_TOKEN: ${{ secrets.DEPLOY }}
